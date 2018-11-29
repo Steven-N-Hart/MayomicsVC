@@ -33,5 +33,6 @@ workflow RunTrimSequencesTask {
    output {
       # Unify outputs from scatter and filter out null entries 
       Array[Array[File]] Outputs = select_all(flatten([TRIMSEQ_paired.Outputs,TRIMSEQ_single.Outputs]))
+      Array[String] RuntimeMemoryParams = select_all(flatten([TRIMSEQ_paired.RuntimeMemoryParams,TRIMSEQ_single.RuntimeMemoryParams]))
    }
 } 

@@ -39,6 +39,7 @@ workflow RunAlignmentTask {
       # Unify outputs from scatter and filter out null entries 
       Array[File] OutputBams = select_all(flatten([ALIGN_paired.OutputBams,ALIGN_single.OutputBams]))
       Array[File] OutputBais = select_all(flatten([ALIGN_paired.OutputBais,ALIGN_single.OutputBais]))
+      Array[String] RuntimeMemoryParams = select_all(flatten([ALIGN_paired.RuntimeMemoryParams,ALIGN_single.RuntimeMemoryParams]))
    }
 
 }
