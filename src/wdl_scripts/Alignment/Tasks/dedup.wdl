@@ -23,6 +23,7 @@ task dedupTask {
    File DedupEnvProfile            # File containing the environmental profile variables
 
    command <<<
+       echo "dedup: cpu=${SentieonThreads} s_vmem=${DedupSoftMemLimit} h_vmem=${DedupHardMemLimit}"
    	   source ${BashPreamble}
    	   /bin/bash ${DedupScript} -b ${InputBams} -s ${SampleName} -S ${Sentieon} -t ${SentieonThreads} -e ${DedupEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -36,5 +37,6 @@ task dedupTask {
    output {
       File OutputBams = "${SampleName}.aligned.sorted.deduped.bam"
       File OutputBais = "${SampleName}.aligned.sorted.deduped.bam.bai"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 }

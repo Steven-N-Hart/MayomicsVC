@@ -24,6 +24,7 @@ task mergebamTask {
    File MergeBamEnvProfile         # File containing the environmental profile variables
 
    command <<<
+       echo "merge: cpu=${SentieonThreads} s_vmem=${MergeSoftMemLimit} h_vmem=${MergeHardMemLimit}"
    	   source ${BashPreamble}
    	   /bin/bash ${MergeBamScript} -b ${sep=',' InputBams} -s ${SampleName} -S ${Sentieon} -t ${SentieonThreads} -e ${MergeBamEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -37,5 +38,6 @@ task mergebamTask {
    output {
       File OutputBams = "${SampleName}.aligned.sorted.merged.bam"
       File OutputBais = "${SampleName}.aligned.sorted.merged.bam.bai"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 }

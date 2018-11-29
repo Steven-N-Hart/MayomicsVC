@@ -43,6 +43,7 @@ task vqsrTask {
    String DebugMode                     # Enable or Disable Debug Mode
 
    command <<<
+      echo "vqsr: cpu=${SentieonThreads} s_vmem=${VqsrSoftMemLimit} h_vmem=${VqsrHardMemLimit}"
       source ${BashPreamble}
       /bin/bash ${VqsrScript} -s ${SampleName} -S ${Sentieon} -G ${Ref} -t ${SentieonThreads} -V ${InputVcf} -r "'${VqsrSnpResourceString}'" -R "'${VqsrIndelResourceString}'" -a ${AnnotateText} -e ${VqsrEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -56,5 +57,6 @@ task vqsrTask {
    output {
       File OutputVcf = "${SampleName}.SNP.recaled.vcf"
       File OutputVcfIdx = "${SampleName}.SNP.recaled.vcf.idx"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 }

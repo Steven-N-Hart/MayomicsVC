@@ -30,6 +30,7 @@ task realignmentTask {
    File RealignEnvProfile                             # File containing the environmental profile variables
 
    command <<<
+      echo "realignment: cpu=${SentieonThreads} s_vmem=${RealignSoftMemLimit} h_vmem=${RealignHardMemLimit}"
       source ${BashPreamble}
       /bin/bash ${RealignmentScript} -s ${SampleName} -b ${InputBams} -G ${Ref} -k ${RealignmentKnownSites} -S ${Sentieon} -t ${SentieonThreads} -e ${RealignEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -43,5 +44,6 @@ task realignmentTask {
    output {
       File OutputBams = "${SampleName}.aligned.sorted.deduped.realigned.bam"
       File OutputBais = "${SampleName}.aligned.sorted.deduped.realigned.bam.bai"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }  
 } 

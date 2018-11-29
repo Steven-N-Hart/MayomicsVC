@@ -30,6 +30,7 @@ task trimsequencesTask {
 
 
    command <<<
+     echo "trim_sequences: cpu=${CutAdaptThreads} s_vmem=${TrimSoftMemLimit} h_vmem=${TrimHardMemLimit}"
      source ${BashPreamble}
      /bin/bash ${TrimSeqScript} -P ${PairedEnd} -l ${InputRead1} -r ${InputRead2} -s ${SampleName} -A ${Adapters} -C ${CutAdapt} -t ${CutAdaptThreads} -e ${TrimEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -42,6 +43,7 @@ task trimsequencesTask {
 
    output {
       Array[File] Outputs = glob("${SampleName}.read?.trimmed.fq.gz")
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 }
 

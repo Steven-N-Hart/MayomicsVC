@@ -44,6 +44,7 @@ task bqsrTask {
    String DebugMode                      # Enable or Disable Debug Mode
 
    command <<<
+       echo "bqsr: cpu=${SentieonThreads} s_vmem=${BqsrSoftMemLimit} h_vmem=${BqsrHardMemLimit}"
        source ${BashPreamble}
        /bin/bash ${BqsrScript} -s ${SampleName} -S ${Sentieon} -G ${Ref} -t ${SentieonThreads} -b ${InputBams} -k ${BqsrKnownSites} -e ${BqsrEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -56,5 +57,6 @@ task bqsrTask {
 
    output {
       File RecalTable = "${SampleName}.recal_data.table"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 }

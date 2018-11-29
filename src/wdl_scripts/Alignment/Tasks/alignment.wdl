@@ -37,6 +37,7 @@ task alignmentTask {
 
 
    command <<<
+      echo "alignment: cpu=${SentieonThreads} s_vmem=${AlignSoftMemLimit} h_vmem=${AlignHardMemLimit}"
       source ${BashPreamble}
       /bin/bash ${AlignmentScript} -P ${PairedEnd} -l ${InputRead1} -r ${InputRead2} -s ${SampleName} -p ${Platform} -L ${Library} -f ${PlatformUnit} -c ${CenterName} -G ${Ref} -o "'${BWAExtraOptionsString}'" -K ${ChunkSizeInBases} -S ${Sentieon} -t ${SentieonThreads} -e ${AlignEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -50,6 +51,7 @@ task alignmentTask {
    output {
       File OutputBams = "${SampleName}.aligned.sorted.bam"
       File OutputBais = "${SampleName}.aligned.sorted.bam.bai"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
    }
 
 } 

@@ -50,6 +50,7 @@ task variantCallingTask {
 
 
    command <<<
+        echo "haplotyper: cpu=${SentieonThreads} s_vmem=${HaplotyperSoftMemLimit} h_vmem=${HaplotyperHardMemLimit}"
         source ${BashPreamble}
         /bin/bash ${HaplotyperScript} -s ${SampleName} -S ${Sentieon} -G ${Ref} -t ${SentieonThreads} -b ${InputBams} -D ${DBSNP} -r ${RecalTable} -o "'${HaplotyperExtraOptionsString}'" -e ${HaplotyperEnvProfile} -F ${BashSharedFunctions} ${DebugMode}
    >>>
@@ -64,6 +65,7 @@ task variantCallingTask {
    
       File OutputVcf = "${SampleName}.vcf"
       File OutputVcfIdx = "${SampleName}.vcf.idx"
+      String RuntimeMemoryParams = read_lines(stdout())[0]
     
    }
 
